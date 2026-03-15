@@ -136,5 +136,21 @@ You may find it useful to copy the code from steganography.c, to start.
 */
 int main(int argc, char **argv)
 {
-	//YOUR CODE HERE
+	if (argc <= 2) {
+		printf(" ./gameOfLife\nusage: ./gameOfLife filename rule\nfilename is an ASCII PPM file (type P3) with maximum value 255.\nrule is a hex number beginning with 0x; Life is 0x1808.\n");
+		return -1;
+	}
+	Image *imagein = readData(argv[1]);
+	if (imagein != NULL) {
+		char *endptr;
+		Image *imageout = life(imagein, strtol(argv[2], &endptr, 16));
+		if (imageout != NULL) {
+			writeData(imageout);
+			freeImage(imagein);
+			freeImage(imageout);
+			return 0;		
+		}
+	free(imagein);	
+	}
+	return -1;
 }
